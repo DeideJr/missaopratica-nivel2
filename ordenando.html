@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenando com JavaScript e DOM</title>
+    <script src="ordenando.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Ordenando com JavaScript e DOM</h1>
+
+    <label for="valor">Valor:</label>
+    <input type="number" id="valor">
+    <br>
+    <button onclick="add()">Adicionar</button>
+    <br>
+    <label for="algoritmo">Algoritmo:</label>
+    <select id="algoritmo">
+        <option value="bubble">Bubble Sort</option>
+        <option value="selection">Selection Sort</option>
+        <option value="quick">Quick Sort</option>
+    </select>
+    <br>
+
+    <button onclick="ordenar()">Ordenar</button>
+    <button onclick="misturar()">Misturar</button>
+
+    <ul id="valores"></ul>
+
+    <script>
+        // Vetor para armazenar os valores
+        const valores = [];
+    
+        // Função para adicionar um valor à lista
+        function add() {
+            const valorInput = document.getElementById('valor');
+            const listaValores = document.getElementById('valores');
+    
+            // Obtém o valor do campo de entrada
+            const valor = parseFloat(valorInput.value);
+    
+            // Verifica se o valor é um número válido
+            if (!isNaN(valor)) {
+                // Adiciona o valor ao vetor e à lista
+                valores.push(valor);
+                const novoItem = document.createElement('li');
+                novoItem.textContent = valor;
+                listaValores.appendChild(novoItem);
+    
+                // Limpa o campo de entrada
+                valorInput.value = '';
+            }
+        }
+    
+        // Função para ordenar os valores
+        function ordenar() {
+            const listaValores = document.getElementById('valores');
+            const algoritmoSelecionado = document.getElementById('algoritmo').value;
+    
+            // Converte os valores da lista em um vetor
+            const arrayValores = Array.from(listaValores.children).map(item => parseFloat(item.textContent));
+    
+            // Escolhe o algoritmo de ordenação com base na seleção do usuário
+            if (algoritmoSelecionado === 'bubble') {
+                bubble_sort(arrayValores);
+            } else if (algoritmoSelecionado === 'selection') {
+                selection_sort(arrayValores);
+            } else if (algoritmoSelecionado === 'quick') {
+                quick_sort(arrayValores, 0, arrayValores.length - 1);
+            }
+    
+            // Atualiza a lista com os valores ordenados
+            while (listaValores.firstChild) {
+                listaValores.removeChild(listaValores.firstChild);
+            }
+    
+            arrayValores.forEach(valor => {
+                const novoItem = document.createElement('li');
+                novoItem.textContent = valor;
+                listaValores.appendChild(novoItem);
+            });
+        }
+    
+        // Função para embaralhar os valores
+        function misturar() {
+            const listaValores = document.getElementById('valores');
+    
+            // Converte os valores da lista em um vetor
+            const arrayValores = Array.from(listaValores.children).map(item => parseFloat(item.textContent));
+    
+            // Embaralha o vetor
+            shuffle(arrayValores, arrayValores.length * 2);
+    
+            // Atualiza a lista com os valores embaralhados
+            while (listaValores.firstChild) {
+                listaValores.removeChild(listaValores.firstChild);
+            }
+    
+            arrayValores.forEach(valor => {
+                const novoItem = document.createElement('li');
+                novoItem.textContent = valor;
+                listaValores.appendChild(novoItem);
+            });
+        }
+    </script>
+    <footer>
+        <p>&copy;<a href="https://www.linkedin.com/in/deide-júnior-5152a7280/" target="_blank">DeideJunior 2023</a></p>
+    </footer>
+</body>
+</html>
